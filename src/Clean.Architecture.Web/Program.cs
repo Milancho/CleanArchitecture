@@ -5,6 +5,7 @@ using Clean.Architecture.Core;
 using Clean.Architecture.Infrastructure;
 using Clean.Architecture.Infrastructure.Data;
 using Clean.Architecture.Web;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -20,7 +21,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
   options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
-string connectionString = builder.Configuration.GetConnectionString("SqliteConnection");  //Configuration.GetConnectionString("DefaultConnection");
+//string connectionString = builder.Configuration.GetConnectionString("SqliteConnection");  //Configuration.GetConnectionString("DefaultConnection");
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext(connectionString);
 
@@ -89,7 +91,7 @@ using (var scope = app.Services.CreateScope())
   try
   {
     var context = services.GetRequiredService<AppDbContext>();
-    //                    context.Database.Migrate();
+    // context.Database.Migrate();
     context.Database.EnsureCreated();
     SeedData.Initialize(services);
   }
